@@ -1,0 +1,23 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+exclude: '.*_pb2.py|.*_pb2_grpc.py'
+repos:
+  -   repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.3.0
+      hooks:
+        -   id: trailing-whitespace
+        -   id: end-of-file-fixer
+  -   repo: https://github.com/PyCQA/flake8
+      rev: 5.0.4
+      hooks:
+        -   id: flake8
+            name: Check Python Code Style
+  -   repo: https://github.com/PyCQA/isort
+      rev: 5.10.1
+      hooks:
+        -   id: isort
+            name: Sort Python Imports
+  -   repo: https://github.com/pre-commit/pygrep-hooks
+      rev: v1.9.0
+      hooks:
+        -   id: python-no-eval
