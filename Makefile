@@ -1,3 +1,5 @@
+home := /home/bobrock
+pyvenv := $(home)/venvs/rtl_temps/bin/python3
 
 bump-patch:
 	sh ppmgr.sh bump
@@ -6,19 +8,14 @@ bump-minor:
 bump-major:
 	sh ppmgr.sh bump major
 pull:
-	sh ppmgr.sh pull
+	git pull origin main
+	install
 push:
-	sh ppmgr.sh push
-debug-run:
-	python3 run_debug.py
-check:
-	pre-commit run --all-files
+	git push origin main
 install:
-	# First-time install - use when lock file is stable
-	poetry install -v
+	$(pyvenv) -m pip install -r requirements.txt
 update:
-	# Update lock file based on changed reqs
-	poetry update -v
+	$(pyvenv) -m pip install -r requirements.txt --upgrade
 
 test:
 	tox
