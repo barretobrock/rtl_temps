@@ -38,14 +38,16 @@ killer = GracefulKiller()
 mappings = {
     3092: {'name': 'rf_mgm_tba'},
     5252: {'name': 'rf_elu_tba'},
-    6853: {'name': 'rf_kwc_tba'},
+    # 6853: {'name': 'rf_kwc_tba'},
     8416: {'name': 'rf_rdu_lne'},
     9459: {'name': 'rf_kok_kyt'},
     9533: {'name': 'rf_knt_tba'},
     10246: {'name': 'rf_kok_uks'},
     12476: {'name': 'rf_swc_tba'},
+    13455: {'name': 'rf_unk_uk1'},
     14539: {'name': 'rf_kok_kkp'},
     15227: {'name': 'rf_rdu_ida'}
+
 }
 # Other items that aren't temp sensors
 other_mappings = {}
