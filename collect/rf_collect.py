@@ -14,7 +14,6 @@ import socket
 from kavalkilu import (
     GracefulKiller,
     HAHelper,
-    HOME_SERVER_HOSTNAME,
     Hosts
 )
 import pandas as pd
@@ -29,7 +28,7 @@ DATA_DIR = Path().home().joinpath('data/rf')
 DATA_DIR.mkdir(exist_ok=True)
 unknown_devs_file = DATA_DIR.joinpath(f'unknown_devs_{datetime.today():%F}.csv')
 
-UDP_IP = Hosts().get_ip_from_host(HOME_SERVER_HOSTNAME)
+UDP_IP = Hosts().get_ip_from_host('altserv')
 UDP_PORT = 1433
 
 hass = HAHelper()
