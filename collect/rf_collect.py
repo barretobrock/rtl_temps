@@ -27,7 +27,7 @@ from pukr import get_logger
 
 LOG_DIR = Path().home().joinpath('logs/rf')
 LOG_DIR.mkdir(exist_ok=True)
-logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR, base_level='DEBUG')
+logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR, base_level='INFO')
 
 
 DATA_DIR = Path().home().joinpath('data/rf')
