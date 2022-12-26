@@ -43,16 +43,16 @@ killer = GracefulKiller()
 # device id to device-specific data mapping
 mappings: Dict[int, Dict[str, Union[str, Optional[int]]]]
 mappings = {
-    3092: {'name': 'rf_mgm_tba', 'last_update': None},
-    5252: {'name': 'rf_elu_tba', 'last_update': None},
-    8416: {'name': 'rf_rdu_lne', 'last_update': None},
-    9459: {'name': 'rf_kok_kyt', 'last_update': None},
-    9533: {'name': 'rf_knt_tba', 'last_update': None},
-    10246: {'name': 'rf_kok_uks', 'last_update': None},
-    12476: {'name': 'rf_swc_tba', 'last_update': None},
-    13455: {'name': 'rf_unk_uk1', 'last_update': None},
-    14539: {'name': 'rf_kok_kkp', 'last_update': None},
-    15227: {'name': 'rf_rdu_ida', 'last_update': None}
+    3092: {'name': 'rf_mgm_tba'},
+    5252: {'name': 'rf_elu_tba'},
+    8416: {'name': 'rf_rdu_lne'},
+    9459: {'name': 'rf_kok_kyt'},
+    9533: {'name': 'rf_knt_tba'},
+    10246: {'name': 'rf_kok_uks'},
+    12476: {'name': 'rf_swc_tba'},
+    13455: {'name': 'rf_unk_uk1'},
+    14539: {'name': 'rf_kok_kkp'},
+    15227: {'name': 'rf_rdu_ida'}
 }
 
 # Map the names of the variables from the various sensors to what's acceptable in the db
