@@ -10,6 +10,11 @@ import json
 from json import JSONDecodeError
 from pathlib import Path
 import socket
+from typing import (
+    Dict,
+    Optional,
+    Union
+)
 
 from kavalkilu import (
     GracefulKiller,
@@ -22,7 +27,8 @@ from pukr import get_logger
 
 LOG_DIR = Path().home().joinpath('logs/rf')
 LOG_DIR.mkdir(exist_ok=True)
-logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR)
+logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR, base_level='DEBUG')
+
 
 DATA_DIR = Path().home().joinpath('data/rf')
 DATA_DIR.mkdir(exist_ok=True)
@@ -35,22 +41,19 @@ hass = HAHelper()
 killer = GracefulKiller()
 
 # device id to device-specific data mapping
+mappings: Dict[int, Dict[str, Union[str, Optional[int]]]]
 mappings = {
-    3092: {'name': 'rf_mgm_tba'},
-    5252: {'name': 'rf_elu_tba'},
-    # 6853: {'name': 'rf_kwc_tba'},
-    8416: {'name': 'rf_rdu_lne'},
-    9459: {'name': 'rf_kok_kyt'},
-    9533: {'name': 'rf_knt_tba'},
-    10246: {'name': 'rf_kok_uks'},
-    12476: {'name': 'rf_swc_tba'},
-    13455: {'name': 'rf_unk_uk1'},
-    14539: {'name': 'rf_kok_kkp'},
-    15227: {'name': 'rf_rdu_ida'}
-
+    3092: {'name': 'rf_mgm_tba', 'last_update': None},
+    5252: {'name': 'rf_elu_tba', 'last_update': None},
+    8416: {'name': 'rf_rdu_lne', 'last_update': None},
+    9459: {'name': 'rf_kok_kyt', 'last_update': None},
+    9533: {'name': 'rf_knt_tba', 'last_update': None},
+    10246: {'name': 'rf_kok_uks', 'last_update': None},
+    12476: {'name': 'rf_swc_tba', 'last_update': None},
+    13455: {'name': 'rf_unk_uk1', 'last_update': None},
+    14539: {'name': 'rf_kok_kkp', 'last_update': None},
+    15227: {'name': 'rf_rdu_ida', 'last_update': None}
 }
-# Other items that aren't temp sensors
-other_mappings = {}
 
 # Map the names of the variables from the various sensors to what's acceptable in the db
 possible_measurements = {
@@ -75,6 +78,8 @@ sock.bind((UDP_IP, UDP_PORT))
 
 unknown_devs_df = pd.DataFrame()
 last_dt = datetime.now().date()     # For reporting daily unknown devices
+start_s = int(datetime.now().timestamp())
+interval_s = 60     # Update values every minute
 
 logg.debug('Beginning loop!')
 while not killer.kill_now:
@@ -84,15 +89,14 @@ while not killer.kill_now:
     data = None
     try:
         data = json.loads(line)
-        # logg.debug(f'Seeing: {data}')
     except JSONDecodeError as e:
         logg.error(e, f'Unable to parse this object. Skipping. \n {line}')
         continue
 
     if "model" not in data:
         # Exclude anything that doesn't contain a device 'model' key
-        logg.debug('Skipping, missed "model" key: '
-                   f'{json.dumps(data, indent=2)}')
+        logg.info('Skipping, missed "model" key: '
+                  f'{json.dumps(data, indent=2)}')
         unknown_devs_df = pd.concat([unknown_devs_df, pd.DataFrame(data, index=[0])])
         continue
 
@@ -106,15 +110,16 @@ while not killer.kill_now:
         if dev_id in mappings.keys():
             # Device is known sensor... record data
             name = mappings[dev_id]['name']
-            logg.debug(f'Device identified. Name: {name}. Communicating to HASS...')
+            logg.debug(f'Device identified. Name: {name}.')
             for measurement_name, detail_dict in possible_measurements.items():
-                hass.set_state(
-                    device_name=f'sensor.{name}_{detail_dict["suffix"]}',
-                    data={'state': data[measurement_name]},
-                    data_class=detail_dict['data_class']
-                )
-        elif dev_id in other_mappings.keys():
-            pass
+                if detail_dict.get('last_update', start_s) - start_s > interval_s:
+                    logg.debug('Interval lapsed. Sending measurements to HASS...')
+                    hass.set_state(
+                        device_name=f'sensor.{name}_{detail_dict["suffix"]}',
+                        data={'state': data[measurement_name]},
+                        data_class=detail_dict['data_class']
+                    )
+                    mappings[dev_id]['last_update'] = int(datetime.now().timestamp())
         else:
             logg.info(f'Unknown device found: {dev_model}: ({dev_id})\n'
                       f'{json.dumps(data, indent=2)}')
