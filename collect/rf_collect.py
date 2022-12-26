@@ -112,7 +112,7 @@ while not killer.kill_now:
             name = mappings[dev_id]['name']
             logg.debug(f'Device identified. Name: {name}.')
             for measurement_name, detail_dict in possible_measurements.items():
-                if detail_dict.get('last_update', start_s) - start_s > interval_s:
+                if datetime.now().timestamp() - detail_dict.get('last_update', start_s) > interval_s:
                     logg.debug('Interval lapsed. Sending measurements to HASS...')
                     hass.set_state(
                         device_name=f'sensor.{name}_{detail_dict["suffix"]}',
