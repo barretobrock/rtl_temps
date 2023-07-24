@@ -12,6 +12,7 @@ from pathlib import Path
 import socket
 from typing import (
     Dict,
+    List,
     Optional,
     Union
 )
@@ -23,6 +24,7 @@ from kavalkilu import (
 )
 import pandas as pd
 from pukr import get_logger
+import yaml
 
 
 LOG_DIR = Path().home().joinpath('logs/rf')
@@ -41,26 +43,11 @@ hass = HAHelper()
 killer = GracefulKiller()
 
 # device id to device-specific data mapping
-mappings: Dict[int, Dict[str, Union[str, Optional[int]]]]
-mappings = {
-    3092: {'name': 'rf_mgm_tba'},
-    5252: {'name': 'rf_elu_tba'},
-    8416: {'name': 'rf_rdu_lne'},
-    9459: {'name': 'rf_kok_kyt'},
-    9533: {'name': 'rf_knt_tba'},
-    10246: {'name': 'rf_kok_uks'},
-    12476: {'name': 'rf_swc_tba'},
-    13455: {'name': 'rf_unk_uk1'},
-    14539: {'name': 'rf_kok_kkp'},
-    15227: {'name': 'rf_rdu_ida'}
-}
+mappings: Dict[int, Dict[str, Union[str, Optional[int], List[Dict[str]]]]]
+mappings = yaml.safe_load(Path(__file__).parent.joinpath('nodes.yaml'))
 
 # Map the names of the variables from the various sensors to what's acceptable in the db
-possible_measurements = {
-    'temperature_C': {'suffix': 'temp', 'data_class': 'temperature'},
-    'humidity': {'suffix': 'hum', 'data_class': 'humidity'}
-}
-
+possible_measurements = ['temperature_C', 'humidity']
 
 def parse_syslog(ln: bytes) -> str:
     """Try to extract the payload from a syslog line."""
@@ -111,17 +98,30 @@ while not killer.kill_now:
             # Device is known sensor... record data
             dev_dict = mappings[dev_id]
             name = dev_dict['name']
+            friendly_name_prefix = dev_dict['friendly_name_prefix']
+            sensors = dev_dict['sensors']  # type: List[Dict]
             last_update = dev_dict.get('last_update', start_s)
             logg.debug(f'Device identified. Name: {name}.')
-            for measurement_name, detail_dict in possible_measurements.items():
-                if datetime.now().timestamp() - last_update > interval_s:
-                    logg.debug('Interval lapsed. Sending measurements to HASS...')
-                    hass.set_state(
-                        device_name=f'sensor.{name}_{detail_dict["suffix"]}',
-                        data={'state': data[measurement_name]},
-                        data_class=detail_dict['data_class']
-                    )
-                    mappings[dev_id]['last_update'] = int(datetime.now().timestamp())
+            if datetime.now().timestamp() - last_update > interval_s:
+                logg.debug('Interval lapsed. Sending measurements to HASS...')
+            for sensor in sensors:
+                data_name = sensor.get('data_name')
+                if data_name not in data.keys():
+                    logg.info(f'Skipped sensor {data_name}, as it wasn\'t in the list of data keys offered: '
+                              f'{",".join(data.keys())}')
+                    continue
+                attributes = sensor['attributes']
+
+                device_class = attributes.get('device_class', 'unk')
+                if 'friendly_name' not in attributes.keys():
+                    attributes['friendly_name'] = f'{friendly_name_prefix} {device_class.title()}'
+
+                hass.set_state(
+                    device_name=f'sensor.rf_{name}_{device_class}',
+                    data={'state': data[data_name]},
+                    attributes=attributes
+                )
+            mappings[dev_id]['last_update'] = int(datetime.now().timestamp())
         else:
             logg.info(f'Unknown device found: {dev_model}: ({dev_id})\n'
                       f'{json.dumps(data, indent=2)}')

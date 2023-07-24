@@ -7,7 +7,7 @@ After=multi-user.target
 User=bobrock
 Group=bobrock
 Type=idle
-ExecStart=/home/bobrock/venvs/rtl_temps/bin/python3 /home/bobrock/extras/rtl_temps/collect/rf_collect.py -lvl info
+ExecStart=/home/bobrock/venvs/rtl_temps/bin/python3 /home/bobrock/extras/rtl_temps/collect/rf_collect.py -lvl debug
 WorkingDirectory=/home/bobrock/extras/rtl_temps
 Restart=on-failure
 

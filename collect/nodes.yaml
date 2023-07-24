@@ -1,0 +1,149 @@
+2735:
+  name: unk1
+  friendly_name_prefix: Unknown Device 1
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+3092:
+  name: bedroom
+  friendly_name_prefix: Bedroom
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+5252:
+  name: livingroom
+  friendly_name_prefix: Living Room
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+8416:
+  name: garage
+  friendly_name_prefix: Garage
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+9459:
+  name: freezer
+  friendly_name_prefix: Freezer
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+9533:
+  name: office
+  friendly_name_prefix: Office
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+10246:
+  name: front_door
+  friendly_name_prefix: Front Door
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+12476:
+  name: main_bath
+  friendly_name_prefix: Main Bath
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+13455:
+  name: unk2
+  friendly_name_prefix: Unknown Device 2
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+14539:
+  name: fridge
+  friendly_name_prefix: Fridge
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity
+15227:
+  name: porch
+  friendly_name_prefix: Porch
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: %
+        device_class: humidity

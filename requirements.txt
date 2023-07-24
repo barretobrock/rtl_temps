@@ -1,3 +1,4 @@
 git+https://github.com/barretobrock/kavalkilu.git#egg=kavalkilu
 git+https://github.com/barretobrock/pukr.git@main#egg=pukr
 pandas
+PyYaml
