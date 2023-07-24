@@ -19,7 +19,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 5252:
   name: livingroom
@@ -33,8 +33,22 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
+6182:
+  name: unk3
+  friendly_name_prefix: Unknown Device 3
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: '%'
+        device_class: temperature
 8416:
   name: garage
   friendly_name_prefix: Garage
@@ -47,7 +61,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 9459:
   name: freezer
@@ -61,7 +75,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 9533:
   name: office
@@ -75,7 +89,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 10246:
   name: front_door
@@ -89,7 +103,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 12476:
   name: main_bath
@@ -103,7 +117,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 13455:
   name: unk2
@@ -117,7 +131,21 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
+        device_class: humidity
+14533:
+  name: unk4
+  friendly_name_prefix: Unknown Device 4
+  sensors:
+    - data_name: temperature_C
+      attributes:
+        state_class: measurement
+        unit_of_measurement: °C
+        device_class: temperature
+    - data_name: humidity
+      attributes:
+        state_class: measurement
+        unit_of_measurement: '%'
         device_class: humidity
 14539:
   name: fridge
@@ -131,7 +159,7 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity
 15227:
   name: porch
@@ -145,5 +173,5 @@
     - data_name: humidity
       attributes:
         state_class: measurement
-        unit_of_measurement: %
+        unit_of_measurement: '%'
         device_class: humidity

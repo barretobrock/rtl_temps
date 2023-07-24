@@ -29,7 +29,7 @@ import yaml
 
 LOG_DIR = Path().home().joinpath('logs/rf')
 LOG_DIR.mkdir(exist_ok=True)
-logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR, base_level='INFO')
+logg = get_logger(log_name='rf_collect', log_dir_path=LOG_DIR, base_level='DEBUG')
 
 
 DATA_DIR = Path().home().joinpath('data/rf')
@@ -43,8 +43,8 @@ hass = HAHelper()
 killer = GracefulKiller()
 
 # device id to device-specific data mapping
-mappings: Dict[int, Dict[str, Union[str, Optional[int], List[Dict[str]]]]]
-mappings = yaml.safe_load(Path(__file__).parent.joinpath('nodes.yaml'))
+mappings: Dict[int, Dict[str, Union[str, Optional[int], List[Dict[str, str]]]]]
+mappings = yaml.safe_load(Path(__file__).parent.joinpath('nodes.yaml').open())
 
 # Map the names of the variables from the various sensors to what's acceptable in the db
 possible_measurements = ['temperature_C', 'humidity']
@@ -104,24 +104,25 @@ while not killer.kill_now:
             logg.debug(f'Device identified. Name: {name}.')
             if datetime.now().timestamp() - last_update > interval_s:
                 logg.debug('Interval lapsed. Sending measurements to HASS...')
-            for sensor in sensors:
-                data_name = sensor.get('data_name')
-                if data_name not in data.keys():
-                    logg.info(f'Skipped sensor {data_name}, as it wasn\'t in the list of data keys offered: '
-                              f'{",".join(data.keys())}')
-                    continue
-                attributes = sensor['attributes']
 
-                device_class = attributes.get('device_class', 'unk')
-                if 'friendly_name' not in attributes.keys():
-                    attributes['friendly_name'] = f'{friendly_name_prefix} {device_class.title()}'
+                for sensor in sensors:
+                    data_name = sensor.get('data_name')
+                    if data_name not in data.keys():
+                        logg.info(f'Skipped sensor {data_name}, as it wasn\'t in the list of data keys offered: '
+                                  f'{",".join(data.keys())}')
+                        continue
+                    attributes = sensor['attributes']
 
-                hass.set_state(
-                    device_name=f'sensor.rf_{name}_{device_class}',
-                    data={'state': data[data_name]},
-                    attributes=attributes
-                )
-            mappings[dev_id]['last_update'] = int(datetime.now().timestamp())
+                    device_class = attributes.get('device_class', 'unk')
+                    if 'friendly_name' not in attributes.keys():
+                        attributes['friendly_name'] = f'{friendly_name_prefix} {device_class.title()}'
+
+                    hass.set_state(
+                        device_name=f'sensor.rf_{name}_{device_class}',
+                        data={'state': data[data_name]},
+                        attributes=attributes
+                    )
+                mappings[dev_id]['last_update'] = int(datetime.now().timestamp())
         else:
             logg.info(f'Unknown device found: {dev_model}: ({dev_id})\n'
                       f'{json.dumps(data, indent=2)}')
