@@ -27,8 +27,8 @@
         unit_of_measurement: '%'
         device_class: humidity
 6182:
-  name: unk3
-  friendly_name_prefix: Unknown Device 3
+  name: front_door
+  friendly_name_prefix: Front Door
   sensors:
     - data_name: temperature_C
       attributes:
@@ -41,8 +41,8 @@
         unit_of_measurement: '%'
         device_class: humidity
 8416:
-  name: garage
-  friendly_name_prefix: Garage
+  name: shed
+  friendly_name_prefix: Shed
   sensors:
     - data_name: temperature_C
       attributes:
@@ -57,20 +57,6 @@
 9459:
   name: freezer
   friendly_name_prefix: Freezer
-  sensors:
-    - data_name: temperature_C
-      attributes:
-        state_class: measurement
-        unit_of_measurement: °C
-        device_class: temperature
-    - data_name: humidity
-      attributes:
-        state_class: measurement
-        unit_of_measurement: '%'
-        device_class: humidity
-10246:
-  name: front_door
-  friendly_name_prefix: Front Door
   sensors:
     - data_name: temperature_C
       attributes:

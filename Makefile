@@ -7,11 +7,11 @@ bump-minor:
 	sh ppmgr.sh bump minor
 bump-major:
 	sh ppmgr.sh bump major
-pull:
+_pull:
 	git pull origin main
-	install
 push:
 	git push origin main
+pull: _pull install
 install:
 	$(pyvenv) -m pip install -r requirements.txt
 update:
@@ -20,4 +20,4 @@ update:
 test:
 	tox
 rebuild-test:
-	tox --recreate -e py310
+	tox --recreate
